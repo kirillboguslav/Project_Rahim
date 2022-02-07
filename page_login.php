@@ -38,10 +38,10 @@
                 Регистрация успешна
             </div> -->
             <?php
-                if($_SESSION['alert'] != false){
-                    echo $_SESSION['alert'];                    
-                } 
-                session_unset();               
+            if ($_SESSION['alert']){
+                echo '<div class="alert alert-'.$_SESSION['alert'].'">'.$_SESSION['message'].'</div>';
+            }
+            session_unset();
             ?>
             <form action="zaloginit" method="POST">
                 <div class="form-group">
@@ -62,7 +62,7 @@
             </form>
         </div>
         <div class="blankpage-footer text-center">
-            Нет аккаунта? <a href="page_register"><strong>Зарегистрироваться</strong>
+            Нет аккаунта? <a href="/"><strong>Зарегистрироваться</strong>
         </div>
     </div>
     <video poster="img/backgrounds/clouds.png" id="bgvid" playsinline autoplay muted loop>

@@ -38,7 +38,7 @@
                         <span class="text-white opacity-50 ml-auto mr-2 hidden-sm-down">
                             Уже зарегистрированы?
                         </span>
-                        <a href="page_login.html" class="btn-link text-white ml-auto ml-sm-0">
+                        <a href="page_login" class="btn-link text-white ml-auto ml-sm-0">
                             Войти
                         </a>
                     </div>
@@ -59,15 +59,15 @@
                             </div>
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
-                                    <?php
-                                    session_start();
-                                    if($_SESSION['alert'] != false){
-                                        echo $_SESSION['alert'];                    
-                                        }
 
-                                    session_unset();               
-                                    ?>                                    
-                                    <form id="js-login" novalidate="" action="registaration" method="POST">
+                                    <?php
+                                        if ($_SESSION['alert']){
+                                            echo '<div class="alert alert-'.$_SESSION['alert'].'">'.$_SESSION['message'].'</div>';
+                                        }
+                                        session_unset();
+                                    ?>
+
+                                    <form id="js-login" novalidate="" action="register" method="POST">
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>
                                             <input type="email" id="emailverify" class="form-control" placeholder="Эл. адрес" required name="email">
