@@ -43,7 +43,7 @@
             }
             session_unset();
             ?>
-            <form action="zaloginit" method="POST">
+            <form action="authorization" method="POST">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
                     <input type="email" id="username" class="form-control" placeholder="Эл. адрес" value="" name="email">
