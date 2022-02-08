@@ -1,5 +1,5 @@
 <?php
-if(is_not_logged_in() and is_admin()){
+if(is_not_logged_in() or !is_admin()){
     redirect_to('/');
 }
 ?>

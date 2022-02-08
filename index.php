@@ -51,14 +51,62 @@ switch ($gps) {
         redirect_to('/create_user');
         break;
 
+    case ($gps[0] == 'edit' and !empty($gps[1])):
+        $user = get_user_by_id($gps[1]);
+        require_once "edit.php";
+        break;
 
+    case ($gps[0] == 'edituser'):
+        edit_info($_POST['id'], $_POST['name'], $_POST['work'], $_POST['phone'], $_POST['address']);
+        display_flash_message('info', 'Пользыватель успешно отредактирован - '.$_POST['name']);
+        redirect_to('/users');
+        break;
 
+    case ($gps[0] == 'page_profile' and !empty($gps[1])):
+        $user = get_user_by_id($gps[1]);
+        require_once "page_profile.php";
+        break;
+
+    case ($gps[0] == 'security' and !empty($gps[1])):
+        $user = get_user_by_id($gps[1]);
+        require_once "security.php";
+        break;
+
+    case ($gps[0] == 'update_security' ):
+        edit_credentials($_POST['id'], $_POST['email'], $_POST['password']);
+        redirect_to('/users');
+        break;
+
+    case ($gps[0] == 'status' and !empty($gps[1])):
+        $user = get_user_by_id($gps[1]);
+        require_once "status.php";
+        break;
+
+    case ($gps[0] == 'setstatus' ):
+        set_status($_POST['id'], $_POST['status']);
+        display_flash_message('info', 'Статус успешно изменен');
+        redirect_to('/users');
+        break;
+
+    case ($gps[0] == 'media' and !empty($gps[1])):
+        $user = get_user_by_id($gps[1]);
+        require_once "media.php";
+        break;
+
+    case ($gps[0] == 'update_avatar'):
+        upload_avatar($_POST['id'], $_FILES);
+        display_flash_message('info', 'Картинка успешно обновлена');
+        redirect_to('/users');
+        break;
+
+    case ($gps[0] == 'delete_user' and !empty($gps[1])):
+        delete($gps[1]);
+        break;
 
     case ($gps[0] == 'logout'):
         session_unset();
         redirect_to('/');
         break;
-
 
     default:
     require_once "404.php";

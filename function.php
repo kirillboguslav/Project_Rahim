@@ -13,6 +13,15 @@ function get_user_by_email($email){
     $result = $statement->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+function get_user_by_id($id){
+    $pdo = new PDO("mysql:host=localhost; dbname=projectrahim", "root", "");
+    $sql = "SELECT * FROM `users` WHERE id = :id";
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['id' => $id]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 //////////все проверки на существующий email в index.php
 function add_user($email, $password){
     $pdo = new PDO("mysql:host=localhost; dbname=projectrahim", "root", "");
@@ -57,13 +66,21 @@ function login($email, $password){
 
 function is_not_logged_in (){
     if(!$_SESSION['user']){
-        redirect_to('page_login');
+        redirect_to('/');
     }
 }
 function is_admin(){
     if($_SESSION['user']['role'] == 'admin'){
         return true;
     }
+}
+
+function is_author($logged_user_id, $edit_user_id){
+    if($logged_user_id == $edit_user_id){
+        return true;
+    }
+    display_flash_message('danger', 'Можно править только свой профиль!');
+    redirect_to('/users');
 }
 
 function get_users(){
@@ -125,9 +142,51 @@ function upload_avatar($user_id, $image){
         }
 }
 
-//////////////////остановился на странице добавление пользователя средствами админки
+//////////////вот тут не очень уверен что сделал правильно
 
+function edit_credentials($user_id, $email, $password){
+    $user = get_user_by_email($email);
 
+    if($user and !is_author($_SESSION['user'],$user)){
+            display_flash_message('danger', 'Такой емейл уже существует!' );
+            redirect_to('/security/'.$user_id);
+    }
+
+    $pdo = new PDO("mysql:host=localhost; dbname=projectrahim", "root", "");
+    $sql = "UPDATE `users` SET `email`=:email,`password`=:password WHERE `users`.`id`= :user_id";
+    $statement = $pdo->prepare($sql);
+    $statement->execute([
+        'email' => $email,
+        'password' => password_hash($password, PASSWORD_DEFAULT),
+        'user_id' => $user_id
+    ]);
+    display_flash_message('info', 'Логин/Пароль успешно обновлен');
+}
+
+function delete($user_id){
+    //////честно говоря с этими проверками запутался, по другому не могу придумать, подскажи пожалуйста
+    if(!is_admin()){
+        if(is_not_logged_in() or !is_author($_SESSION['user'],$user)){
+            display_flash_message('danger', 'Удалять может только админ!');
+            redirect_to('/page_login');
+        }
+    }
+    //////////поиск и удаление картинки
+    $pdo = new PDO("mysql:host=localhost; dbname=projectrahim", "root", "");
+    $sql = "SELECT * FROM `users` WHERE `users`.`id`= :user_id";
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['user_id' => $user_id]);
+    $array = $statement->fetch(PDO::FETCH_ASSOC);
+
+    unlink('img/demo/avatars/'.$array['avatar']);
+    /////////удаления пользывателя по айдишнику
+    $sql = "DELETE FROM `users` WHERE `users`.`id`= :user_id";
+    $statement = $pdo->prepare($sql);
+    $statement->execute(['user_id' => $user_id]);
+    session_unset();
+    redirect_to('/page_login');
+
+}
 
 
 

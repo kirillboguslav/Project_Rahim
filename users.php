@@ -81,7 +81,7 @@ for ($i = 0; $i < count(get_users()); $i++) {
                                 <?php
                                     status_id($users[$i]['status']);
                                 ?>
-                                <a href="page_profile.php">
+                                <a href="page_profile/<?php echo $users[$i]['id']; ?>">
                                     <span class="rounded-circle profile-image d-block " style="background-image:url('img/demo/avatars/<?php echo $users[$i]['avatar']; ?>'); background-size: cover;"></span>
                                 </span>
                                 </a>
@@ -100,20 +100,20 @@ for ($i = 0; $i < count(get_users()); $i++) {
                                     ?>
                                     
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="edit/<?php echo $id = 1 + $i; ?>">
+                                        <a class="dropdown-item" href="edit/<?php echo $users[$i]['id']; ?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
-                                        <a class="dropdown-item" href="security/<?php echo $id = 1 + $i; ?>">
+                                        <a class="dropdown-item" href="security/<?php echo $users[$i]['id']; ?>">
                                             <i class="fa fa-lock"></i>
                                         Безопасность</a>
-                                        <a class="dropdown-item" href="status/<?php echo $id = 1 + $i; ?>">
+                                        <a class="dropdown-item" href="status/<?php echo $users[$i]['id']; ?>">
                                             <i class="fa fa-sun"></i>
                                         Установить статус</a>
-                                        <a class="dropdown-item" href="media/<?php echo $id = 1 + $i; ?>">
+                                        <a class="dropdown-item" href="media/<?php echo $users[$i]['id']; ?>">
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
-                                        <a href="deleteuser/<?php echo $id = 1 + $i; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                        <a href="delete_user/<?php echo $users[$i]['id']; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close"></i>
                                             Удалить
                                         </a>
