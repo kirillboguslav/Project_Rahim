@@ -80,7 +80,6 @@ function is_author($logged_user_id, $edit_user_id){
         return true;
     }
     display_flash_message('danger', 'Можно править только свой профиль!');
-    redirect_to('/users');
 }
 
 function get_users(){
